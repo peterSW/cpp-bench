@@ -22,7 +22,7 @@ $($(BIN)) : $($(OBJ)) $(GMOCK_MAIN_LIB)
 
 
 $($(OBJ)) : $($(SRC)) | $(GMOCK_DIR) $(dir $($(OBJ)))
-$($(OBJ)) : CPPFLAGS := $(CPPFLAGS_FOR_GMOCK_TESTS) -I include
+$($(OBJ)) : CPPFLAGS := $(CPPFLAGS_FOR_GMOCK_TESTS) -I tests/include -I include
 $($(OBJ)) : CXXFLAGS := $(CXXFLAGS_FOR_GMOCK_TESTS)
 
 $(dir $($(OBJ))) :
