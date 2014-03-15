@@ -23,7 +23,7 @@ struct LinearPerfDetector
     }
 };
 
-TEST(CanDetect, LinearPerformance)
+TEST(CanDetect, DISABLED_LinearPerformance)
 {
     LinearPerfDetector linDetector;
     EXPECT_TRUE(linDetector(a_func_with_linear_perf));
