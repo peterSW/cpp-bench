@@ -2,6 +2,8 @@
 BUILD_DIR := build
 OBJ_DIR := $(BUILD_DIR)/obj
 
+.DEFAULT_GOAL := all
+
 include tps/gmock.mk
 TEST_CATEGORY := ACCEPTANCE
 include mk/canned_gmock_tests.mk
@@ -23,7 +25,7 @@ include mk/rules.mk
 
 .PHONY : clean cleanall
 clean :
-	$(ACCEPTANCE_CLEAN_CMD)
+	$(RM) -r $(BUILD_DIR)
 
 cleanall : clean
 	$(GMOCK_CLEAN_CMD)
