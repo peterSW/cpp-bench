@@ -1,6 +1,8 @@
 cpp-bench
 =========
 
+[![Build Status](https://travis-ci.org/peterSW/cpp-bench.png?branch=master)](https://travis-ci.org/peterSW/cpp-bench)
+
 Assert performance in C++ like minitest/benchmark does for Ruby.
 
 Some options for linear regression:
