@@ -15,17 +15,14 @@ void a_func_with_non_linear_perf(size_t problemSize)
     }
 }
 
-struct LinearPerfDetector
+TEST(CanAssert,  DISABLED_LinearPerformance)
 {
-    bool operator () (void (size_t))
-    {
-        return true;
-    }
-};
-
-TEST(CanDetect, DISABLED_LinearPerformance)
-{
-    LinearPerfDetector linDetector;
-    EXPECT_TRUE(linDetector(a_func_with_linear_perf));
-    EXPECT_FALSE(linDetector(a_func_with_non_linear_perf));
+//    using namespace cppbench;
+//    ASSERT_THAT(
+//        Performance(a_func_with_linear_perf),
+//        Linear());
+//
+//    ASSERT_THAT(
+//        Performance(a_func_with_non_linear_perf),
+//        Not(Linear());
 }
