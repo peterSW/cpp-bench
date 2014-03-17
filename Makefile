@@ -12,6 +12,8 @@ include mk/canned_gmock_tests.mk
 #TEST_CATEGORY := UNIT
 #include mk/canned_gmock_tests.mk
 
+$(UNIT_TEST_BIN) : LDFLAGS += -lgsl -lgslcblas
+
 .PHONY : all
 all : $(ACCEPTANCE_TEST_BIN) $(UNIT_TEST_BIN)
 
