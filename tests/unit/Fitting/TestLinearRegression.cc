@@ -1,24 +1,72 @@
-#include <gsl/gsl_fit.h>
+#include "Observations.h"
+#include "LinearFitGSL.h"
+
+#include "MockTimedFunctors.h"
+#include "MockTimer.h"
+
+#include <vector>
 
 #include <gmock/gmock.h>
 
-TEST(LinearRegressionWithGSL, one_two_three)
+MATCHER(Linear, "")
 {
-    double x[] = {1, 2, 3};
-    double y[] = {1, 2, 3};
-    size_t stride(1);
-    size_t len(3);
+    const Observations &obs(arg);
+    LinearFitGSL fit(obs);
+    return fit.sumSquare() == 0;
+}
+#include "ObservationsCollector.h"
+class Performance
+{
+    Observations m_obs;
+
+public:
+    static Timer *timer;
+
+public:
+    template<typename F>
+    Performance(F func)
+    {
+        std::vector<std::size_t> probSizes(3);
+        probSizes[0] = 10;
+        probSizes[1] = 100;
+        probSizes[2] = 1000;
+        ObservationsCollector oc(*timer);
+        oc.setProbSizes(probSizes);
+        m_obs = oc.observationsOf(func);
+    }
     
-    // Outputs
-    double c0;
-    double c1; 
-    double cov00;
-    double cov01;
-    double cov11; 
-    double sumsq;
+    operator const Observations & () const
+    {
+        return m_obs;
+    }
+};
+
+Timer *Performance::timer = NULL;
+
+TEST(LinearRegressionWithGSL, usingObservations)
+{
+    Observations obs(3);
+    obs[0].problemSize = 1;
+    obs[0].time = 1;
+    obs[1].problemSize = 2;
+    obs[1].time = 2;
+    obs[2].problemSize = 3;
+    obs[2].time = 3;
+
+    LinearFitGSL fit(obs);
+
+    EXPECT_THAT(obs, Linear());
+}
+
+TEST(LinearRegressionWithGSL, full)
+{
+    MockTimer timer;
+    Performance::timer = &timer;
+    LinearMockTimedFunctor lmtf(timer);
+    SqrMockTimedFunctor nlmtf(timer);
+
+    EXPECT_THAT(Performance(lmtf), Linear());
     
-    gsl_fit_linear(x, stride, y, stride, len, &c0, &c1, &cov00, &cov01, &cov11, &sumsq);
-    
-    EXPECT_THAT(sumsq, ::testing::DoubleEq(0.0));
+    EXPECT_THAT(Performance(nlmtf), ::testing::Not(Linear()));
 }
 
