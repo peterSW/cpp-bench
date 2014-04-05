@@ -5,3 +5,19 @@ before_install: sudo apt-get update
 install: sudo apt-get install libgsl0-dev
 
 script: make check
+
+env:
+  global:
+   # The next declration is the encrypted COVERITY_SCAN_TOKEN, created
+   #   via the "travis encrypt" command using the project repo's public key
+   - secure: "N2bILy3npI+bMpxxeR3oFBNpyXk+jq34MBKLvnt/Ls4Ug36yU8KhUdmniHDrmzED1k7glX+p9Y6O08h1LbXhWzTuuU81EUtSV32pP3FnYt5yGQtbXpuAivT8s8Hfy1kmyhU/G5NL0ld8mbQ0KWozbml7Vt2+n8ciAqiZQNLmifI="
+
+addons:
+  coverity_scan:
+    project:
+      name: "peterSW/cpp-bench"
+      description: "Your project description here"
+    notification_email: peterdwilliams@gmail.com
+    build_command_prepend:
+    build_command: make
+    branch_pattern: coverity_scan
